@@ -1,0 +1,23 @@
+@charset 'utf-8';
+
+@import "~bulma/bulma.sass";
+
+// Custom
+
+@import "./variables.scss";
+// @import "./typography.scss";
+@import "./header.scss";
+@import "./home.scss";
+@import "./footer.scss";
+
+.wrapper {
+  // background: lightblue;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  background: white;
+  flex-grow: 1;
+}

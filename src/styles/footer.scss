@@ -1,0 +1,6 @@
+footer {
+  // background: red;
+  @include from($tablet) {
+    height: 3rem;
+  }
+}

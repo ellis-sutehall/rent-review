@@ -1,0 +1,66 @@
+{
+  "title": "Rent Review",
+  "tagline": "Putting the renter first",
+  "header": {
+    "left_menu": {
+      "actions": [
+        {
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    },
+    "right_menu": {
+      "actions": [
+        {
+          "label": "Sign Up",
+          "url": "/signup",
+          "class": "button is-secondary"
+        },
+        {
+          "label": "Login",
+          "url": "/login",
+          "class": "button is-primary"
+        }
+      ]
+    },
+    "jump_menu": {
+      "actions": [
+        {
+          "label": "How To",
+          "url": "#how-to"
+        },
+        {
+          "label": "What people Say",
+          "url": "#people-say"
+        },
+        {
+          "label": "Get Involved",
+          "url": "#involved"
+        }
+      ]
+    }
+  },
+  "footer": {
+    "footer_menu": {
+      "actions": [
+        {
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "label": "Legal",
+          "url": "/legal"
+        }
+      ]
+    }
+  }
+}
