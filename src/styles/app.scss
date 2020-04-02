@@ -8,6 +8,7 @@
 // @import "./typography.scss";
 @import "./header.scss";
 @import "./home.scss";
+@import "./property";
 @import "./footer.scss";
 
 .wrapper {
@@ -17,7 +18,7 @@
   min-height: 100vh;
 }
 
-.content {
+.main {
   background: white;
   flex-grow: 1;
 }

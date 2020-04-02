@@ -1,0 +1,39 @@
+.reviews {
+  background-color: lightblue;
+  min-height: 100vh;
+  margin-top: $size-1 * 2;
+  display: flex;
+  padding: $size-1;
+  .container {
+    padding: $size-1;
+    // background: white;
+    flex-grow: 1;
+    .review-wrap {
+      .review {
+        // background: lightblue;
+        background: white;
+        padding: $size-1;
+        margin-top: $size-1;
+        position: relative;
+        // &:not(:last-child) {
+        //   &:after {
+        //     content: "";
+        //     display: block;
+        //     position: absolute;
+        //     width: 4px;
+        //     height: $size-1;
+        //     background: white;
+        //     bottom: -$size-1;
+        //     right: $size-1;
+        //   }
+        // }
+        .star-rating {
+          margin-bottom: $size-4;
+        }
+        .reviewer {
+          margin-top: $size-4;
+        }
+      }
+    }
+  }
+}
