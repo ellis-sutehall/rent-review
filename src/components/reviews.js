@@ -21,7 +21,10 @@ const Reviews = () => {
           <div className="column is-two-thirds">
             <div className="review-wrap">
               <div className="leave-review">
-                <form>
+                <form
+                  method="POST"
+                  action="https://api.staticman.net/v3/entry/github/ellis-sutehall/rent-review/master"
+                >
                   <div className="columns">
                     <div className="column is-half">
                       <div className="field">
@@ -29,7 +32,11 @@ const Reviews = () => {
                           Name
                         </label>
                         <div className="control has-icons-left has-icons-right">
-                          <input className="input" type="text" name="name" />
+                          <input
+                            className="input"
+                            type="text"
+                            name="fields[name]"
+                          />
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faUser} />
                           </span>
@@ -48,7 +55,11 @@ const Reviews = () => {
                           Email
                         </label>
                         <div className="control has-icons-left has-icons-right">
-                          <input className="input" type="text" name="email" />
+                          <input
+                            className="input"
+                            type="text"
+                            name="fields[email]"
+                          />
                           <span className="icon is-small is-left">
                             <FontAwesomeIcon icon={faEnvelope} />
                           </span>
@@ -142,7 +153,9 @@ const Reviews = () => {
                     ></textarea>
                   </div>
 
-                  <button className="button">Submit</button>
+                  <button className="button" type="submit">
+                    Submit
+                  </button>
                 </form>
               </div>
               <h2 className="title is-2 has-text-centered">
