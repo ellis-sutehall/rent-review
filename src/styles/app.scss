@@ -8,6 +8,7 @@
 // @import "./typography.scss";
 @import "./header.scss";
 @import "./home.scss";
+@import "./page.scss";
 @import "./property";
 @import "./footer.scss";
 
@@ -21,4 +22,8 @@
 .main {
   background: white;
   flex-grow: 1;
+}
+
+section:not(.hero-half) {
+  padding-top: $size-1 * 2;
 }

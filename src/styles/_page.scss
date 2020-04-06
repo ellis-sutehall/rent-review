@@ -1,0 +1,7 @@
+.hero-half {
+  // + navbar-height
+  height: calc(50vh + #{$navbar-height});
+  display: flex;
+  align-items: center;
+  background: lightblue;
+}
