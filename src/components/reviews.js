@@ -18,7 +18,7 @@ import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 //           email
 //           date
 //           name
-//           id
+//           listing_id
 //         }
 //       }
 //     }
@@ -54,6 +54,13 @@ const Reviews = props => {
                       <div>
                         <input
                           name="fields[listing_id]"
+                          type="hidden"
+                          value={props.listingId}
+                        />
+                      </div>
+                      <div>
+                        <input
+                          name="options[slug]"
                           type="hidden"
                           value={props.listingId}
                         />
