@@ -5,7 +5,7 @@ import "../styles/app.scss"
 import HomeHeroHead from "./homeHeroHead"
 
 const Layout = ({ children, location }) => {
-  console.log(location.pathname)
+  // console.log(location.pathname)
 
   const path = location.pathname
 

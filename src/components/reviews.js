@@ -1,4 +1,5 @@
 import React from "react"
+import { graphql } from "gatsby"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faStar as fasStar,
@@ -9,7 +10,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 
-const Reviews = () => {
+// export const data = graphql`
+//   query($slug: String!) {
+//     allReviewsYaml(listing_id: { eq: $slug }) {
+//       edges {
+//         node {
+//           email
+//           date
+//           name
+//           id
+//         }
+//       }
+//     }
+//   }
+// `
+
+const Reviews = props => {
+  // console.log(`Listing id = ${query}`)
   return (
     <section className="reviews">
       <div className="container">
@@ -32,6 +49,13 @@ const Reviews = () => {
                           name="options[redirect]"
                           type="hidden"
                           value="http://localhost:8000"
+                        />
+                      </div>
+                      <div>
+                        <input
+                          name="fields[listing_id]"
+                          type="hidden"
+                          value={props.listingId}
                         />
                       </div>
                       <div className="field">

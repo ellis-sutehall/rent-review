@@ -18,5 +18,13 @@ module.exports = {
         api_key: "aa2vwdy6yaxnmbrrum32wgh3",
       },
     },
+    "gatsby-transformer-yaml",
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        path: `${__dirname}/_data/reviews`,
+        name: "reviews",
+      },
+    },
   ],
 }

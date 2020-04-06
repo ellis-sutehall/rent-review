@@ -18,6 +18,7 @@ export const query = graphql`
       image_caption
       agent_logo
       agent_name
+      listing_id
     }
   }
 `
@@ -63,7 +64,7 @@ const Property = (props, location) => {
           </div>
         </div>
       </section>
-      <Reviews />
+      <Reviews listingId={props.data.property.listing_id} />
     </Layout>
   )
 }
