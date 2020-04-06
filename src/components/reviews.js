@@ -23,7 +23,7 @@ const Reviews = () => {
               <div className="leave-review">
                 <form
                   method="POST"
-                  action="https://api.staticman.net/v3/entry/github/ellis-sutehall/rent-review/master/comments"
+                  action="https://api.staticman.net/v3/entry/github/ellis-sutehall/rent-review/master/reviews"
                 >
                   <div className="columns">
                     <div className="column is-half">
