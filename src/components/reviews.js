@@ -23,10 +23,17 @@ const Reviews = () => {
               <div className="leave-review">
                 <form
                   method="POST"
-                  action="https://api.staticman.net/v3/entry/github/ellis-sutehall/rent-review/master"
+                  action="https://api.staticman.net/v3/entry/github/ellis-sutehall/rent-review/master/comments"
                 >
                   <div className="columns">
                     <div className="column is-half">
+                      <div>
+                        <input
+                          name="options[redirect]"
+                          type="hidden"
+                          value="http://localhost:8000"
+                        />
+                      </div>
                       <div className="field">
                         <label className="label" htmlFor="name">
                           Name
@@ -71,7 +78,7 @@ const Reviews = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="columns">
+                  {/* <div className="columns">
                     <div className="column is-one-third has-text-centered">
                       <h6 className="title is-6">
                         How would you rate the property?
@@ -151,7 +158,7 @@ const Reviews = () => {
                       placeholder="Leave your review here"
                       rows="8"
                     ></textarea>
-                  </div>
+                  </div> */}
 
                   <button className="button" type="submit">
                     Submit
