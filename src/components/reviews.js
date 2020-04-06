@@ -10,20 +10,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 
-export const data = graphql`
-  query($slug: String!) {
-    allReviewsYaml(filter: { slug: { eq: $slug } }) {
-      edges {
-        node {
-          email
-          date
-          name
-          listing_id
-        }
-      }
-    }
-  }
-`
+// export const data = graphql`
+//   query($slug: String!) {
+//     allReviewsYaml(filter: { slug: { eq: $slug } }) {
+//       edges {
+//         node {
+//           email
+//           date
+//           name
+//           listing_id
+//         }
+//       }
+//     }
+//   }
+// `
 
 const Reviews = props => {
   console.log(`Listing id = ${props.listingId}`)
