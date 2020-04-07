@@ -10,23 +10,23 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 
-// export const data = graphql`
-//   query($slug: String!) {
-//     allReviewsYaml(filter: { slug: { eq: $slug } }) {
-//       edges {
-//         node {
-//           email
-//           date
-//           name
-//           listing_id
-//         }
-//       }
-//     }
-//   }
-// `
+export const data = graphql`
+  query($slug: String!) {
+    allReviewsYaml(filter: { fields: { slug: { eq: $slug } } }) {
+      edges {
+        node {
+          email
+          date
+          name
+          listing_id
+        }
+      }
+    }
+  }
+`
 
 const Reviews = props => {
-  console.log(`Listing id = ${props.listingId}`)
+  console.log(`This is the data: ${data}`)
   return (
     <section className="reviews">
       <div className="container">
@@ -109,26 +109,27 @@ const Reviews = props => {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="columns">
+
+                  <div className="columns">
                     <div className="column is-one-third has-text-centered">
                       <h6 className="title is-6">
                         How would you rate the property?
                       </h6>
                       <div className="control has-text-centered">
                         <label className="radio">
-                          <input type="radio" name="one" />1
+                          <input type="radio" name="fields[property-one]" />1
                         </label>
                         <label className="radio">
-                          <input type="radio" name="two" />2
+                          <input type="radio" name="fields[property-two]" />2
                         </label>
                         <label className="radio">
-                          <input type="radio" name="three" />3
+                          <input type="radio" name="fields[property-three]" />3
                         </label>
                         <label className="radio">
-                          <input type="radio" name="four" />4
+                          <input type="radio" name="fields[property-four]" />4
                         </label>
                         <label className="radio">
-                          <input type="radio" name="five" />5
+                          <input type="radio" name="fields[property-five]" />5
                         </label>
                       </div>
                     </div>
@@ -138,19 +139,19 @@ const Reviews = props => {
                       </h6>
                       <div className="control has-text-centered">
                         <label className="radio">
-                          <input type="radio" name="one" />1
+                          <input type="radio" name="fields[agent-one]" />1
                         </label>
                         <label className="radio">
-                          <input type="radio" name="two" />2
+                          <input type="radio" name="fields[agent-two]" />2
                         </label>
                         <label className="radio">
-                          <input type="radio" name="three" />3
+                          <input type="radio" name="fields[agent-three]" />3
                         </label>
                         <label className="radio">
-                          <input type="radio" name="four" />4
+                          <input type="radio" name="fields[agent-four]" />4
                         </label>
                         <label className="radio">
-                          <input type="radio" name="five" />5
+                          <input type="radio" name="fields[agent-five]" />5
                         </label>
                       </div>
                     </div>
@@ -160,19 +161,19 @@ const Reviews = props => {
                       </h6>
                       <div className="control has-text-centered">
                         <label className="radio">
-                          <input type="radio" name="one" />1
+                          <input type="radio" name="fields[landlord-one]" />1
                         </label>
                         <label className="radio">
-                          <input type="radio" name="two" />2
+                          <input type="radio" name="fields[landlord-two]" />2
                         </label>
                         <label className="radio">
-                          <input type="radio" name="three" />3
+                          <input type="radio" name="fields[landlord-three]" />3
                         </label>
                         <label className="radio">
-                          <input type="radio" name="four" />4
+                          <input type="radio" name="fields[landlord-four]" />4
                         </label>
                         <label className="radio">
-                          <input type="radio" name="five" />5
+                          <input type="radio" name="fields[landlord-five]" />5
                         </label>
                       </div>
                     </div>
@@ -184,12 +185,12 @@ const Reviews = props => {
                     <textarea
                       className="textarea"
                       type="text"
-                      name="review"
+                      name="fields[review]"
                       id=""
                       placeholder="Leave your review here"
                       rows="8"
                     ></textarea>
-                  </div> */}
+                  </div>
 
                   <button className="button" type="submit">
                     Submit

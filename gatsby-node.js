@@ -31,7 +31,9 @@ const { createFilePath } = require(`gatsby-source-filesystem`)
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === `ReviewsYaml`) {
-    const slug = createFilePath({ node, getNode, basePath: `pages` })
+    let slug = createFilePath({ node, getNode, basePath: `pages` })
+    slug = slug.split("-")
+    slug = slug[1]
     createNodeField({
       node,
       name: `slug`,
