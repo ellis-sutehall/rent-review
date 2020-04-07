@@ -119,7 +119,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[property-one]"
+                            name="fields[property-rating]"
                             value="1"
                           />
                           1
@@ -127,7 +127,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[property-two]"
+                            name="fields[property-rating]"
                             value="2"
                           />
                           2
@@ -135,7 +135,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[property-three]"
+                            name="fields[property-rating]"
                             value="3"
                           />
                           3
@@ -143,7 +143,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[property-four]"
+                            name="fields[property-rating]"
                             value="4"
                           />
                           4
@@ -151,7 +151,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[property-five]"
+                            name="fields[property-rating]"
                             value="5"
                           />
                           5
@@ -166,7 +166,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[agent-one]"
+                            name="fields[agent-rating]"
                             value="1"
                           />
                           1
@@ -174,7 +174,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[agent-two]"
+                            name="fields[agent-rating]"
                             value="2"
                           />
                           2
@@ -182,7 +182,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[agent-three]"
+                            name="fields[agent-rating]"
                             value="3"
                           />
                           3
@@ -190,7 +190,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[agent-four]"
+                            name="fields[agent-rating]"
                             value="4"
                           />
                           4
@@ -198,7 +198,7 @@ const Reviews = props => {
                         <label className="radio">
                           <input
                             type="radio"
-                            name="fields[agent-five]"
+                            name="fields[agent-rating]"
                             value="5"
                           />
                           5
