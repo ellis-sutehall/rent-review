@@ -117,19 +117,44 @@ const Reviews = props => {
                       </h6>
                       <div className="control has-text-centered">
                         <label className="radio">
-                          <input type="radio" name="fields[property-one]" />1
+                          <input
+                            type="radio"
+                            name="fields[property-one]"
+                            value="1"
+                          />
+                          1
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[property-two]" />2
+                          <input
+                            type="radio"
+                            name="fields[property-two]"
+                            value="2"
+                          />
+                          2
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[property-three]" />3
+                          <input
+                            type="radio"
+                            name="fields[property-three]"
+                            value="3"
+                          />
+                          3
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[property-four]" />4
+                          <input
+                            type="radio"
+                            name="fields[property-four]"
+                            value="4"
+                          />
+                          4
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[property-five]" />5
+                          <input
+                            type="radio"
+                            name="fields[property-five]"
+                            value="5"
+                          />
+                          5
                         </label>
                       </div>
                     </div>
@@ -139,19 +164,44 @@ const Reviews = props => {
                       </h6>
                       <div className="control has-text-centered">
                         <label className="radio">
-                          <input type="radio" name="fields[agent-one]" />1
+                          <input
+                            type="radio"
+                            name="fields[agent-one]"
+                            value="1"
+                          />
+                          1
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[agent-two]" />2
+                          <input
+                            type="radio"
+                            name="fields[agent-two]"
+                            value="2"
+                          />
+                          2
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[agent-three]" />3
+                          <input
+                            type="radio"
+                            name="fields[agent-three]"
+                            value="3"
+                          />
+                          3
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[agent-four]" />4
+                          <input
+                            type="radio"
+                            name="fields[agent-four]"
+                            value="4"
+                          />
+                          4
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[agent-five]" />5
+                          <input
+                            type="radio"
+                            name="fields[agent-five]"
+                            value="5"
+                          />
+                          5
                         </label>
                       </div>
                     </div>
@@ -161,19 +211,44 @@ const Reviews = props => {
                       </h6>
                       <div className="control has-text-centered">
                         <label className="radio">
-                          <input type="radio" name="fields[landlord-one]" />1
+                          <input
+                            type="radio"
+                            name="fields[landlord-one]"
+                            value="1"
+                          />
+                          1
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[landlord-two]" />2
+                          <input
+                            type="radio"
+                            name="fields[landlord-two]"
+                            value="2"
+                          />
+                          2
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[landlord-three]" />3
+                          <input
+                            type="radio"
+                            name="fields[landlord-three]"
+                            value="3"
+                          />
+                          3
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[landlord-four]" />4
+                          <input
+                            type="radio"
+                            name="fields[landlord-four]"
+                            value="4"
+                          />
+                          4
                         </label>
                         <label className="radio">
-                          <input type="radio" name="fields[landlord-five]" />5
+                          <input
+                            type="radio"
+                            name="fields[landlord-five]"
+                            value="5"
+                          />
+                          5
                         </label>
                       </div>
                     </div>
