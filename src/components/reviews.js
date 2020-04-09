@@ -6,10 +6,52 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar as fasStar } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 
+// export const reviewData = graphql`
+//   query($slug: String!) {
+//     property(listing_id: { eq: $slug }) {
+//       listing_id
+//     }
+//     allReviewsYaml {
+//       edges {
+//         node {
+//           name
+//           review
+//           agent_rating
+//           landlord_rating
+//           property_rating
+//         }
+//       }
+//     }
+//   }
+// `
+
+// query($slug: String!) {
+//   allReviewsYaml(
+//     sort: { fields: date, order: DESC }
+//     filter: { fields: { slug: { eq: $slug } } }
+//   ) {
+//     edges {
+//       node {
+//         name
+//         date
+//         email
+//         review
+//         property_rating
+//         agent_rating
+//         landlord_rating
+//       }
+//     }
+//   }
+// }
+// `
+
 const Reviews = props => {
   const reviewData = useStaticQuery(graphql`
     query {
-      allReviewsYaml {
+      allReviewsYaml(
+        sort: { fields: date, order: DESC }
+        filter: { fields: { slug: { eq: "52882945" } } }
+      ) {
         edges {
           node {
             name
@@ -35,7 +77,7 @@ const Reviews = props => {
         <div className="columns is-centered">
           <div className="column is-two-thirds">
             <div className="review-wrap">
-              <ReviewForm />
+              <ReviewForm listingId={props.listingId} />
               <h2 className="title is-2 has-text-centered">
                 What the community says
               </h2>

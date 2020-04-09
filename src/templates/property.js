@@ -20,6 +20,21 @@ export const query = graphql`
       agent_name
       listing_id
     }
+    allReviewsYaml(
+      filter: { fields: { slug: { eq: $slug } } }
+      sort: { fields: date, order: DESC }
+    ) {
+      edges {
+        node {
+          name
+          review
+          agent_rating
+          landlord_rating
+          property_rating
+          listing_id
+        }
+      }
+    }
   }
 `
 
@@ -64,6 +79,11 @@ const Property = (props, location) => {
           </div>
         </div>
       </section>
+      <div>
+        {/* {query.allReviewsYaml.edges.map(edge => (
+          <p>{edge.node.name}</p>
+        ))} */}
+      </div>
       <Reviews listingId={props.data.property.listing_id} />
     </Layout>
   )
