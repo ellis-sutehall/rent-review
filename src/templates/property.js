@@ -8,36 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar as fasStar } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 
-export const query = graphql`
-  query($slug: String!) {
-    property(listing_id: { eq: $slug }) {
-      description
-      displayable_address
-      short_description
-      image_url
-      image_caption
-      agent_logo
-      agent_name
-      listing_id
-    }
-    allReviewsYaml(
-      filter: { fields: { slug: { eq: $slug } } }
-      sort: { fields: date, order: DESC }
-    ) {
-      edges {
-        node {
-          name
-          review
-          agent_rating
-          landlord_rating
-          property_rating
-          listing_id
-        }
-      }
-    }
-  }
-`
-
 const Property = (props, location) => {
   return (
     <Layout location={location}>
@@ -80,13 +50,45 @@ const Property = (props, location) => {
         </div>
       </section>
       <div>
-        {/* {query.allReviewsYaml.edges.map(edge => (
-          <p>{edge.node.name}</p>
-        ))} */}
+        {props.data.allReviewsYaml.edges.map((edge) => (
+          <p>
+            {edge.node.name} - {edge.node.review}
+          </p>
+        ))}
       </div>
       <Reviews listingId={props.data.property.listing_id} />
     </Layout>
   )
 }
+
+export const propertyQuery = graphql`
+  query($slug: String!) {
+    property(listing_id: { eq: $slug }) {
+      description
+      displayable_address
+      short_description
+      image_url
+      image_caption
+      agent_logo
+      agent_name
+      listing_id
+    }
+    allReviewsYaml(
+      filter: { fields: { slug: { eq: $slug } } }
+      sort: { fields: date, order: DESC }
+    ) {
+      edges {
+        node {
+          name
+          review
+          agent_rating
+          landlord_rating
+          property_rating
+          listing_id
+        }
+      }
+    }
+  }
+`
 
 export default Property
