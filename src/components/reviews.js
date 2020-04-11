@@ -6,66 +6,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar as fasStar } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
 
-// export const reviewData = graphql`
-//   query($slug: String!) {
-//     property(listing_id: { eq: $slug }) {
-//       listing_id
-//     }
-//     allReviewsYaml {
-//       edges {
-//         node {
-//           name
-//           review
-//           agent_rating
-//           landlord_rating
-//           property_rating
-//         }
-//       }
-//     }
-//   }
-// `
-
-// query($slug: String!) {
-//   allReviewsYaml(
-//     sort: { fields: date, order: DESC }
-//     filter: { fields: { slug: { eq: $slug } } }
-//   ) {
-//     edges {
-//       node {
-//         name
-//         date
-//         email
-//         review
-//         property_rating
-//         agent_rating
-//         landlord_rating
-//       }
-//     }
-//   }
-// }
-// `
-
 const Reviews = props => {
-  const reviewData = useStaticQuery(graphql`
-    query {
-      allReviewsYaml(
-        sort: { fields: date, order: DESC }
-        filter: { fields: { slug: { eq: "52882945" } } }
-      ) {
-        edges {
-          node {
-            name
-            date
-            email
-            review
-            property_rating
-            agent_rating
-            landlord_rating
-          }
-        }
-      }
-    }
-  `)
+  // const reviewData = useStaticQuery(graphql`
+  //   query {
+  //     allReviewsYaml(
+  //       sort: { fields: date, order: DESC }
+  //       filter: { fields: { slug: { eq: "52882945" } } }
+  //     ) {
+  //       edges {
+  //         node {
+  //           name
+  //           date
+  //           email
+  //           review
+  //           property_rating
+  //           agent_rating
+  //           landlord_rating
+  //         }
+  //       }
+  //     }
+  //   }
+  // `)
 
   return (
     <section className="reviews">
@@ -81,7 +42,8 @@ const Reviews = props => {
               <h2 className="title is-2 has-text-centered">
                 What the community says
               </h2>
-              {reviewData.allReviewsYaml.edges.map(edge => (
+
+              {/* {reviewData.allReviewsYaml.edges.map(edge => (
                 <div className="review">
                   <div className="star-rating">
                     <div className="level">
@@ -123,68 +85,7 @@ const Reviews = props => {
                     <strong>- {edge.node.name}</strong>
                   </p>
                 </div>
-              ))}
-              <div className="review">
-                <div className="star-rating">
-                  <div className="level">
-                    <div className="property-rating">
-                      <p>
-                        <strong>Property</strong>
-                      </p>
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                    </div>
-                    <div className="agent-rating">
-                      <p>
-                        <strong>Agent</strong>
-                      </p>
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                    </div>
-                    <div className="landlord-rating">
-                      <p>
-                        <strong>Landlord</strong>
-                      </p>
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                    </div>
-                    <div className="aggregate-rating">
-                      <p>
-                        <strong>Overall</strong>
-                      </p>
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={fasStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                      <FontAwesomeIcon icon={farStar} />
-                    </div>
-                  </div>
-                </div>
-
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Quisque nec vestibulum massa, at tristique turpis. Nulla leo
-                  est, porta sit amet velit ut, pretium accumsan elit. Praesent
-                  pulvinar nisi viverra augue mattis, ac imperdiet justo porta.
-                  Quisque felis erat, porta at risus cursus, placerat semper
-                  dui. Nullam luctus neque vitae leo ornare, a dapibus nunc
-                  sagittis. Suspendisse rutrum metus vitae facilisis fringilla.
-                  Duis iaculis magna enim, ac tincidunt ligula facilisis eu.
-                  Nullam aliquet cursus lorem eget viverra.
-                </p>
-                <p className="reviewer">
-                  <strong>- Ellis Sutehall</strong>
-                </p>
-              </div>
+              ))} */}
             </div>
           </div>
         </div>
