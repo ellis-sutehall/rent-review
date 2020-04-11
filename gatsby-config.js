@@ -22,12 +22,9 @@ module.exports = {
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        path: `${__dirname}/src/data/reviews/`,
+        path: `${__dirname}/data/reviews`,
         name: "reviews",
       },
     },
   ],
-  mapping: {
-    "property.listing_id": "AllReviewsYaml",
-  },
 }
