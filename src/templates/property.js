@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import Head from "../components/head"
@@ -40,6 +40,86 @@ export const propertyQuery = graphql`
 `
 
 const Property = ({ props, location, data }) => {
+  const [formSubmit, setFormSubmit] = useState("form-not-submitted")
+
+  useEffect(() => {
+    // Get all form inputs
+    const reviewForm = document.getElementById("review-form")
+    const name = document.getElementById("review-name")
+    const email = document.getElementById("review-email")
+    const propertyRating = document.getElementById("review-property-rating")
+    const agentRating = document.getElementById("review-agent-rating")
+    const landlordRating = document.getElementById("review-landlord-rating")
+    const body = document.getElementById("review-body")
+
+    // Hidden Inputs
+    const date = document.getElementById("review-date")
+    const listingId = document.getElementById("listing-id")
+
+    // Handle Submit
+    const submitHandler = e => {
+      // Prevent default form submit
+      e.preventDefault()
+
+      // Set Headers
+      const myHeaders = new Headers()
+      myHeaders.append(
+        "Authorization",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZThkYmMwOGVkY2JlM2U2Y2IyMjU4ZiIsImlhdCI6MTU5MjMxOTcyMSwiZXhwIjoxNTk0OTExNzIxfQ.9m_Lock0HAI1iA33NS-uZUshTUGzGtaq9GS6SCMwfDA"
+      )
+      myHeaders.append("Content-Type", "application/json")
+
+      // Construct Body of request by extracting values from from fields
+      const raw = JSON.stringify({
+        name: name.value,
+        email: email.value,
+        date: date.value,
+        listingId: listingId.value,
+        propertyRating: propertyRating.value,
+        agentRating: agentRating.value,
+        landlordRating: landlordRating.value,
+        reviewBody: body.value,
+      })
+
+      // Setup request
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      }
+
+      // Use Fetch to post request and log results
+      fetch(`${process.env.GATSBY_API_URL}/reviews`, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log("error", error))
+
+      // Finally, clear form and set state
+      name.value = ""
+      email.value = ""
+      propertyRating.value = "1"
+      agentRating.value = "1"
+      landlordRating.value = "1"
+      body.value = ""
+
+      setFormSubmit("form-submitted")
+      console.log(formSubmit)
+    }
+
+    // Listen for form submit
+    reviewForm.addEventListener("submit", submitHandler)
+
+    return () => {
+      reviewForm.removeEventListener("submit", submitHandler)
+    }
+  }, [formSubmit])
+
+  const closeNotice = () => {
+    const notice = document.querySelector(".notification.form-submitted")
+    notice.style.display = "none"
+  }
+
   return (
     <Layout location={location}>
       <Head title="Property" />
@@ -83,8 +163,12 @@ const Property = ({ props, location, data }) => {
 
       <section className="reviews">
         <div className="container">
-          <div class="notification is-success">
-            <button class="delete"></button>
+          <div
+            className={`notification is-success ${formSubmit}`}
+            data={formSubmit}
+          >
+            <button class="delete" onClick={closeNotice}></button>
+            <h4 className="title is-4">Your review has been submitted</h4>
             <p>Thank you for submitting a review for this property.</p>
             <p>Your review will appear soon.</p>
           </div>

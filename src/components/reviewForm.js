@@ -10,64 +10,9 @@ import {
 const Reviewform = props => {
   let date = new Date().toISOString().substr(0, 19)
 
-  const submitHandler = e => {
-    // Prevent default form submit
-    e.preventDefault()
-
-    // Get all form inputs
-    const name = document.getElementById("review-name")
-    const email = document.getElementById("review-email")
-    const propertyRating = document.getElementById("review-property-rating")
-    const agentRating = document.getElementById("review-agent-rating")
-    const landlordRating = document.getElementById("review-landlord-rating")
-    const body = document.getElementById("review-body")
-
-    // Hidden Inputs
-    const date = document.getElementById("review-date")
-    const listingId = document.getElementById("listing-id")
-
-    // Set Headers
-    const myHeaders = new Headers()
-    myHeaders.append("Content-Type", "application/json")
-
-    // Construct Body of request by extracting values from from fields
-    const raw = JSON.stringify({
-      name: name.value,
-      email: email.value,
-      date: date.value,
-      listingId: listingId.value,
-      propertyRating: propertyRating.value,
-      agentRating: agentRating.value,
-      landlordRating: landlordRating.value,
-      reviewBody: body.value,
-    })
-
-    // Setup request
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    }
-
-    // Use Fetch to post request and log results
-    fetch("http://localhost:1337/reviews", requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log("error", error))
-
-    // Finally, clear form and set state
-    name.value = ""
-    email.value = ""
-    propertyRating.value = ""
-    agentRating.value = ""
-    landlordRating.value = ""
-    body.value = ""
-  }
-
   return (
     <div className="leave-review">
-      <form onSubmit={submitHandler}>
+      <form id="review-form">
         <div className="columns">
           <div className="column is-half">
             <div>

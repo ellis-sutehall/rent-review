@@ -35,5 +35,11 @@
         }
       }
     }
+    .notification {
+      display: none;
+      &.form-submitted {
+        display: block;
+      }
+    }
   }
 }
