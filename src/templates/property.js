@@ -83,6 +83,11 @@ const Property = ({ props, location, data }) => {
 
       <section className="reviews">
         <div className="container">
+          <div class="notification is-success">
+            <button class="delete"></button>
+            <p>Thank you for submitting a review for this property.</p>
+            <p>Your review will appear soon.</p>
+          </div>
           <h2 className="title is-2 has-text-centered">Lived here?</h2>
           <h3 className="title -is-3 has-text-centered">
             Help others by leaving a review

@@ -7,149 +7,207 @@ import {
   faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons"
 
-const Reviewform = props => (
-  <div className="leave-review">
-    <form
-      method="POST"
-      action="https://api.staticman.net/v3/entry/github/ellis-sutehall/rent-review/master/reviews"
-    >
-      <div className="columns">
-        <div className="column is-half">
-          <div>
-            <input
-              name="options[redirect]"
-              type="hidden"
-              value="http://localhost:8000"
-            />
-          </div>
-          <div>
-            <input
-              name="fields[listing_id]"
-              type="hidden"
-              value={props.listingId}
-            />
-          </div>
-          <div>
-            <input name="options[slug]" type="hidden" value={props.listingId} />
-          </div>
-          <div className="field">
-            <label className="label" htmlFor="name">
-              Name
-            </label>
-            <div className="control has-icons-left has-icons-right">
-              <input className="input" type="text" name="fields[name]" />
-              <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <span className="icon is-small is-right">
-                <FontAwesomeIcon icon={faCheck} />
-              </span>
-            </div>
-            <p className="help">
-              Enter your name as it will display on the site
-            </p>
-          </div>
-        </div>
-        <div className="column is-half">
-          <div className="field">
-            <label className="label" htmlFor="email">
-              Email
-            </label>
-            <div className="control has-icons-left has-icons-right">
-              <input className="input" type="text" name="fields[email]" />
-              <span className="icon is-small is-left">
-                <FontAwesomeIcon icon={faEnvelope} />
-              </span>
-              <span className="icon is-small is-right">
-                <FontAwesomeIcon icon={faExclamationTriangle} />
-              </span>
-            </div>
-            <p className="help">Enter a valid email address</p>
-          </div>
-        </div>
-      </div>
+const Reviewform = props => {
+  let date = new Date().toISOString().substr(0, 19)
 
-      <div className="columns">
-        <div className="column is-one-third has-text-centered">
-          <h6 className="title is-6">How would you rate the property?</h6>
-          <div className="control has-text-centered">
-            <label className="radio">
-              <input type="radio" name="fields[property-rating]" value="1" />1
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[property-rating]" value="2" />2
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[property-rating]" value="3" />3
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[property-rating]" value="4" />4
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[property-rating]" value="5" />5
-            </label>
-          </div>
-        </div>
-        <div className="column is-one-third has-text-centered">
-          <h6 className="title is-6">How would you rate the agent?</h6>
-          <div className="control has-text-centered">
-            <label className="radio">
-              <input type="radio" name="fields[agent-rating]" value="1" />1
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[agent-rating]" value="2" />2
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[agent-rating]" value="3" />3
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[agent-rating]" value="4" />4
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[agent-rating]" value="5" />5
-            </label>
-          </div>
-        </div>
-        <div className="column is-one-third has-text-centered">
-          <h6 className="title is-6">How would you rate the landlord?</h6>
-          <div className="control has-text-centered">
-            <label className="radio">
-              <input type="radio" name="fields[landlord-rating]" value="1" />1
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[landlord-rating]" value="2" />2
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[landlord-rating]" value="3" />3
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[landlord-rating]" value="4" />4
-            </label>
-            <label className="radio">
-              <input type="radio" name="fields[landlord-rating]" value="5" />5
-            </label>
-          </div>
-        </div>
-      </div>
-      <div className="field">
-        <label className="label" htmlFor="review">
-          Review
-        </label>
-        <textarea
-          className="textarea"
-          type="text"
-          name="fields[review]"
-          id=""
-          placeholder="Leave your review here"
-          rows="8"
-        ></textarea>
-      </div>
+  const submitHandler = e => {
+    // Prevent default form submit
+    e.preventDefault()
 
-      <button className="button" type="submit">
-        Submit
-      </button>
-    </form>
-  </div>
-)
+    // Get all form inputs
+    const name = document.getElementById("review-name")
+    const email = document.getElementById("review-email")
+    const propertyRating = document.getElementById("review-property-rating")
+    const agentRating = document.getElementById("review-agent-rating")
+    const landlordRating = document.getElementById("review-landlord-rating")
+    const body = document.getElementById("review-body")
+
+    // Hidden Inputs
+    const date = document.getElementById("review-date")
+    const listingId = document.getElementById("listing-id")
+
+    // Set Headers
+    const myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/json")
+
+    // Construct Body of request by extracting values from from fields
+    const raw = JSON.stringify({
+      name: name.value,
+      email: email.value,
+      date: date.value,
+      listingId: listingId.value,
+      propertyRating: propertyRating.value,
+      agentRating: agentRating.value,
+      landlordRating: landlordRating.value,
+      reviewBody: body.value,
+    })
+
+    // Setup request
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    }
+
+    // Use Fetch to post request and log results
+    fetch("http://localhost:1337/reviews", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log("error", error))
+
+    // Finally, clear form and set state
+    name.value = ""
+    email.value = ""
+    propertyRating.value = ""
+    agentRating.value = ""
+    landlordRating.value = ""
+    body.value = ""
+  }
+
+  return (
+    <div className="leave-review">
+      <form onSubmit={submitHandler}>
+        <div className="columns">
+          <div className="column is-half">
+            <div>
+              <input
+                id="listing-id"
+                name="listing_id"
+                type="hidden"
+                value={props.listingId}
+                required
+              />
+              <input
+                id="review-date"
+                name="date"
+                type="hidden"
+                value={date}
+                required
+              />
+            </div>
+            <div className="field">
+              <label className="label" htmlFor="name">
+                Name
+              </label>
+              <div className="control has-icons-left has-icons-right">
+                <input
+                  id="review-name"
+                  className="input"
+                  type="text"
+                  name="name"
+                  required
+                />
+                <span className="icon is-small is-left">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+                <span className="icon is-small is-right">
+                  <FontAwesomeIcon icon={faCheck} />
+                </span>
+              </div>
+              <p className="help">
+                Enter your name as it will display on the site
+              </p>
+            </div>
+          </div>
+          <div className="column is-half">
+            <div className="field">
+              <label className="label" htmlFor="email">
+                Email
+              </label>
+              <div className="control has-icons-left has-icons-right">
+                <input
+                  id="review-email"
+                  className="input"
+                  type="text"
+                  name="email"
+                  required
+                />
+                <span className="icon is-small is-left">
+                  <FontAwesomeIcon icon={faEnvelope} />
+                </span>
+                <span className="icon is-small is-right">
+                  <FontAwesomeIcon icon={faExclamationTriangle} />
+                </span>
+              </div>
+              <p className="help">Enter a valid email address</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="columns">
+          <div className="column is-one-third has-text-centered">
+            <h6 className="title is-6">How would you rate the property?</h6>
+            <div className="control has-text-centered">
+              <div className="select">
+                <select
+                  id="review-property-rating"
+                  name="property-rating"
+                  required
+                >
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="column is-one-third has-text-centered">
+            <h6 className="title is-6">How would you rate the agent?</h6>
+            <div className="control has-text-centered">
+              <div className="select">
+                <select id="review-agent-rating" name="agent-rating" required>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="column is-one-third has-text-centered">
+            <h6 className="title is-6">How would you rate the landlord?</h6>
+            <div className="control has-text-centered">
+              <div className="select">
+                <select
+                  id="review-landlord-rating"
+                  name="landlord-rating"
+                  required
+                >
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="field">
+          <label className="label" htmlFor="review">
+            Review
+          </label>
+          <textarea
+            id="review-body"
+            className="textarea"
+            type="text"
+            name="review-body"
+            placeholder="Leave your review here"
+            rows="8"
+            required
+          ></textarea>
+        </div>
+
+        <button className="button" type="submit">
+          Submit
+        </button>
+      </form>
+    </div>
+  )
+}
 
 export default Reviewform
