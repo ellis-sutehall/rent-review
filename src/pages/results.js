@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Layout from "../components/layout"
 import Head from "../components/head"
+import { Link } from "gatsby"
 
 const Results = ({ location }) => {
   const [loading, setLoading] = useState("")
@@ -30,7 +31,7 @@ const Results = ({ location }) => {
         setFetchedData(false)
         return false
       })
-  })
+  }, [location.state.search])
 
   return (
     <Layout location={location}>
@@ -47,12 +48,14 @@ const Results = ({ location }) => {
             fetchedData.map((listing, i) => {
               return (
                 <div>
-                  <img src={listing.thumbnail_url} alt="" />
-                  <p key={i}>{listing.displayable_address}</p>
-                  <p key={i}>{listing.short_description}</p>
-                  <p key={i}>{listing.listing_status}</p>
-                  <p key={i}>{listing.post_town}</p>
-                  <p key={i}>{listing.price}</p>
+                  <Link to={`property/${listing.listing_id}`}>
+                    <img src={listing.thumbnail_url} alt="" />
+                    <p key={i}>{listing.displayable_address}</p>
+                    <p key={i}>{listing.short_description}</p>
+                    <p key={i}>{listing.listing_status}</p>
+                    <p key={i}>{listing.post_town}</p>
+                    <p key={i}>{listing.price}</p>
+                  </Link>
                 </div>
               )
             })}

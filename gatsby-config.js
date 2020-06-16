@@ -15,6 +15,7 @@ module.exports = {
         postcode: "+",
         area: "england",
         listing_status: "rent",
+        page_size: "100",
         api_key: "aa2vwdy6yaxnmbrrum32wgh3",
       },
     },
