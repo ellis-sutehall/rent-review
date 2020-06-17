@@ -10,19 +10,19 @@ const Review = props => {
             <p>
               <strong>Property</strong>
             </p>
-            <StarRating count={props.review.property_rating} />
+            <StarRating count={props.review.propertyRating} />
           </div>
           <div className="agent-rating">
             <p>
               <strong>Agent</strong>
             </p>
-            <StarRating count={props.review.agent_rating} />
+            <StarRating count={props.review.agentRating} />
           </div>
           <div className="landlord-rating">
             <p>
               <strong>Landlord</strong>
             </p>
-            <StarRating count={props.review.landlord_rating} />
+            <StarRating count={props.review.landlordRating} />
           </div>
           <div className="aggregate-rating">
             <p>
@@ -30,18 +30,19 @@ const Review = props => {
             </p>
             <StarRating
               count={Math.round(
-                (parseInt(props.review.property_rating) +
-                  parseInt(props.review.agent_rating) +
-                  parseInt(props.review.landlord_rating)) /
+                (parseInt(props.review.propertyRating) +
+                  parseInt(props.review.agentRating) +
+                  parseInt(props.review.landlordRating)) /
                   3
               )}
             />
           </div>
         </div>
       </div>
-      <p>{props.review.review}</p>
+      <p>{props.review.reviewBody}</p>
       <p className="reviewer">
         <strong>- {props.review.name}</strong>
+        <strong>- {props.review.listingId}</strong>
       </p>
     </div>
   )

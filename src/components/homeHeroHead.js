@@ -54,18 +54,20 @@ const HomeHeroHead = () => {
 
           <div className="navbar-menu">
             <div className="navbar-start">
-              {data.site.siteMetadata.header.left_menu.actions.map(action => (
-                <Link className="navbar-item" to={action.url}>
-                  {action.label}
-                </Link>
-              ))}
+              {data.site.siteMetadata.header.left_menu.actions.map(
+                (action, index) => (
+                  <Link key={index} className="navbar-item" to={action.url}>
+                    {action.label}
+                  </Link>
+                )
+              )}
             </div>
 
             <div className="navbar-end">
               <div className="navbar-item">
                 {data.site.siteMetadata.header.right_menu.actions.map(
-                  action => (
-                    <Link className={action.class} to={action.url}>
+                  (action, index) => (
+                    <Link key={index} className={action.class} to={action.url}>
                       {action.label}
                     </Link>
                   )

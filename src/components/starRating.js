@@ -9,9 +9,9 @@ const StarRating = props => {
     for (let i = 0; i < 5; i++) {
       let stars = []
       if (i < props.count) {
-        stars.push(<FontAwesomeIcon icon={fasStar} />)
+        stars.push(<FontAwesomeIcon key={i} icon={fasStar} />)
       } else {
-        stars.push(<FontAwesomeIcon icon={farStar} />)
+        stars.push(<FontAwesomeIcon key={i} icon={farStar} />)
       }
       starWrap.push(stars)
     }

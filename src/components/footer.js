@@ -36,8 +36,8 @@ const Footer = () => {
             <div className="level-item">
               <nav className="navbar">
                 {data.site.siteMetadata.footer.footer_menu.actions.map(
-                  action => (
-                    <Link className="navbar-item" to={action.url}>
+                  (action, index) => (
+                    <Link key={index} className="navbar-item" to={action.url}>
                       {action.label}
                     </Link>
                   )

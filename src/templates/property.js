@@ -21,27 +21,37 @@ export const propertyQuery = graphql`
       agent_name
       listing_id
     }
-    allReviewsYaml(
-      filter: { fields: { slug: { eq: $slug } } }
-      sort: { fields: date, order: DESC }
-    ) {
-      edges {
-        node {
-          name
-          review
-          agent_rating
-          landlord_rating
-          property_rating
-          listing_id
-        }
-      }
-    }
   }
 `
 
 const Property = ({ props, location, data }) => {
-  const [formSubmit, setFormSubmit] = useState("form-not-submitted")
+  const [fetchedReviews, setFetchedReviews] = useState([])
+  useEffect(() => {
+    const myHeaders = new Headers()
+    myHeaders.append(
+      "Authorization",
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZThkYmMwOGVkY2JlM2U2Y2IyMjU4ZiIsImlhdCI6MTU5MjMxOTcyMSwiZXhwIjoxNTk0OTExNzIxfQ.9m_Lock0HAI1iA33NS-uZUshTUGzGtaq9GS6SCMwfDA"
+    )
 
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    }
+
+    fetch(`${process.env.GATSBY_API_URL}/reviews`, requestOptions)
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        setFetchedReviews(
+          json.filter(review => review.listingId === data.property.listing_id)
+        )
+      })
+      .catch(error => console.log("error", error))
+  }, [data.property.listing_id])
+
+  const [formSubmit, setFormSubmit] = useState("form-not-submitted")
   useEffect(() => {
     // Get all form inputs
     const reviewForm = document.getElementById("review-form")
@@ -104,7 +114,6 @@ const Property = ({ props, location, data }) => {
       body.value = ""
 
       setFormSubmit("form-submitted")
-      console.log(formSubmit)
     }
 
     // Listen for form submit
@@ -119,6 +128,8 @@ const Property = ({ props, location, data }) => {
     const notice = document.querySelector(".notification.form-submitted")
     notice.style.display = "none"
   }
+
+  console.log(fetchedReviews)
 
   return (
     <Layout location={location}>
@@ -167,7 +178,7 @@ const Property = ({ props, location, data }) => {
             className={`notification is-success ${formSubmit}`}
             data={formSubmit}
           >
-            <button class="delete" onClick={closeNotice}></button>
+            <button className="delete" onClick={closeNotice}></button>
             <h4 className="title is-4">Your review has been submitted</h4>
             <p>Thank you for submitting a review for this property.</p>
             <p>Your review will appear soon.</p>
@@ -183,9 +194,9 @@ const Property = ({ props, location, data }) => {
                 <h2 className="title is-2 has-text-centered">
                   What the community says
                 </h2>
-                {data.allReviewsYaml.edges.map(({ node }) => {
-                  return <Review review={node} />
-                })}
+                {Object.keys(fetchedReviews).map((index, key) => (
+                  <Review key={index} review={fetchedReviews[key]} />
+                ))}
               </div>
             </div>
           </div>
