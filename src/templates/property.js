@@ -27,6 +27,7 @@ export const propertyQuery = graphql`
 const Property = ({ props, location, data }) => {
   const [fetchedReviews, setFetchedReviews] = useState([])
   const [formSubmit, setFormSubmit] = useState("form-not-submitted")
+  const [notification, setNotification] = useState("")
   const [loading, setLoading] = useState("")
   const [error, setError] = useState("")
 
@@ -81,6 +82,9 @@ const Property = ({ props, location, data }) => {
     const date = document.getElementById("review-date")
     const listingId = document.getElementById("listing-id")
 
+    // Notification
+    const notification = document.querySelector(".notification")
+
     // Handle Submit
     const submitHandler = e => {
       // Prevent default form submit
@@ -129,32 +133,41 @@ const Property = ({ props, location, data }) => {
       body.value = ""
       // Update state
       setFormSubmit("form-submitted")
+      setNotification("notification-open")
       // Call get reviews function again to display the newly submitted review without a page refresh
       getReviews()
     }
 
     // Listen for form submit
     reviewForm.addEventListener("submit", submitHandler)
+
+    // Close notifiction
+    const closeNotice = () => {
+      notification.style.display = "none"
+      setNotification("notification-closed")
+    }
+
+    // Listen for click on notification
+    notification.addEventListener("click", closeNotice)
+    // Close thank you notice on click
+
+    const closeTimeOut = () => {
+      const notice = document.querySelector(".notification.notification-open")
+      if (notice) {
+        setTimeout(() => {
+          notice.style.display = "none"
+        }, 5000)
+        setNotification("notification-closed")
+      }
+    }
+    closeTimeOut()
+
     // Clean up by removing eventlistener
     return () => {
       reviewForm.removeEventListener("submit", submitHandler)
+      notification.removeEventListener("click", closeNotice)
     }
   }, [formSubmit, data.property.listing_id])
-  // Close thank you notice on click
-  const closeNotice = () => {
-    const notice = document.querySelector(".notification.form-submitted")
-    notice.style.display = "none"
-  }
-  const closeTimeOut = () => {
-    const notice = document.querySelector(".notification.form-submitted")
-    if (notice) {
-      setTimeout(() => {
-        notice.style.display = "none"
-      }, 5000)
-    }
-  }
-
-  closeTimeOut()
 
   return (
     <Layout location={location}>
@@ -199,11 +212,8 @@ const Property = ({ props, location, data }) => {
 
       <section className="reviews">
         <div className="container">
-          <div
-            className={`notification is-success ${formSubmit}`}
-            data={formSubmit}
-          >
-            <button className="delete" onClick={closeNotice}></button>
+          <div className={`notification is-success ${notification}`}>
+            <button className="delete"></button>
             <h4 className="title is-4">Your review has been submitted</h4>
             <p>Thank you for submitting a review for this property.</p>
             <p>Your review will appear soon.</p>

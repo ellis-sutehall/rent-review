@@ -8,7 +8,7 @@ const Results = ({ location }) => {
   const [error, setError] = useState("")
   const [fetchedData, setFetchedData] = useState("")
 
-  console.log(`Location: ${location.state.search}`)
+  // console.log(`Location: ${location.state.search}`)
 
   useEffect(() => {
     const postcode = location.state.search
