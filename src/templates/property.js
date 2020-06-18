@@ -26,33 +26,48 @@ export const propertyQuery = graphql`
 
 const Property = ({ props, location, data }) => {
   const [fetchedReviews, setFetchedReviews] = useState([])
-  useEffect(() => {
-    const myHeaders = new Headers()
-    myHeaders.append(
-      "Authorization",
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZThkYmMwOGVkY2JlM2U2Y2IyMjU4ZiIsImlhdCI6MTU5MjMxOTcyMSwiZXhwIjoxNTk0OTExNzIxfQ.9m_Lock0HAI1iA33NS-uZUshTUGzGtaq9GS6SCMwfDA"
-    )
-
-    const requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    }
-
-    fetch(`${process.env.GATSBY_API_URL}/reviews`, requestOptions)
-      .then(response => {
-        return response.json()
-      })
-      .then(json => {
-        setFetchedReviews(
-          json.filter(review => review.listingId === data.property.listing_id)
-        )
-      })
-      .catch(error => console.log("error", error))
-  }, [data.property.listing_id])
-
   const [formSubmit, setFormSubmit] = useState("form-not-submitted")
+  const [loading, setLoading] = useState("")
+  const [error, setError] = useState("")
+
   useEffect(() => {
+    // Function to call all review from Strapi API - Sets headers with JWT to authorise
+    const getReviews = () => {
+      const myHeaders = new Headers()
+      myHeaders.append(
+        "Authorization",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZThkYmMwOGVkY2JlM2U2Y2IyMjU4ZiIsImlhdCI6MTU5MjMxOTcyMSwiZXhwIjoxNTk0OTExNzIxfQ.9m_Lock0HAI1iA33NS-uZUshTUGzGtaq9GS6SCMwfDA"
+      )
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      }
+      // Fetch and filter data to only show reviews on corresponding page
+      fetch(
+        `${process.env.GATSBY_API_URL}/reviews?_sort=createdAt:DESC`,
+        requestOptions
+      )
+        .then(response => {
+          return response.json()
+        })
+        .then(json => {
+          setFetchedReviews(
+            json.filter(review => review.listingId === data.property.listing_id)
+          )
+          setLoading(false)
+        })
+        .catch(error => {
+          console.log("error", error)
+          setLoading(false)
+          setFetchedReviews(false)
+          setError(true)
+          return false
+        })
+    }
+    getReviews()
+
     // Get all form inputs
     const reviewForm = document.getElementById("review-form")
     const name = document.getElementById("review-name")
@@ -71,7 +86,7 @@ const Property = ({ props, location, data }) => {
       // Prevent default form submit
       e.preventDefault()
 
-      // Set Headers
+      // Set Headers and authorise
       const myHeaders = new Headers()
       myHeaders.append(
         "Authorization",
@@ -105,31 +120,41 @@ const Property = ({ props, location, data }) => {
         .then(result => console.log(result))
         .catch(error => console.log("error", error))
 
-      // Finally, clear form and set state
+      // Set the form back to default
       name.value = ""
       email.value = ""
       propertyRating.value = "1"
       agentRating.value = "1"
       landlordRating.value = "1"
       body.value = ""
-
+      // Update state
       setFormSubmit("form-submitted")
+      // Call get reviews function again to display the newly submitted review without a page refresh
+      getReviews()
     }
 
     // Listen for form submit
     reviewForm.addEventListener("submit", submitHandler)
-
+    // Clean up by removing eventlistener
     return () => {
       reviewForm.removeEventListener("submit", submitHandler)
     }
-  }, [formSubmit])
-
+  }, [formSubmit, data.property.listing_id])
+  // Close thank you notice on click
   const closeNotice = () => {
     const notice = document.querySelector(".notification.form-submitted")
     notice.style.display = "none"
   }
+  const closeTimeOut = () => {
+    const notice = document.querySelector(".notification.form-submitted")
+    if (notice) {
+      setTimeout(() => {
+        notice.style.display = "none"
+      }, 5000)
+    }
+  }
 
-  console.log(fetchedReviews)
+  closeTimeOut()
 
   return (
     <Layout location={location}>
@@ -194,9 +219,17 @@ const Property = ({ props, location, data }) => {
                 <h2 className="title is-2 has-text-centered">
                   What the community says
                 </h2>
-                {Object.keys(fetchedReviews).map((index, key) => (
-                  <Review key={index} review={fetchedReviews[key]} />
-                ))}
+                {loading && <p>Loading reviews...</p>}
+                {error && (
+                  <p>
+                    There was an error fetching the reviews, please try again
+                    later
+                  </p>
+                )}
+                {fetchedReviews &&
+                  Object.keys(fetchedReviews).map((index, key) => (
+                    <Review key={index} review={fetchedReviews[key]} />
+                  ))}
               </div>
             </div>
           </div>
