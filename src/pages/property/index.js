@@ -1,28 +1,12 @@
 import React, { useState, useEffect } from "react"
-import { graphql } from "gatsby"
-import Layout from "../components/layout"
-import Head from "../components/head"
-import HeadingOne from "../components/headingOne"
-import Review from "../components/review"
-import ReviewForm from "../components/reviewForm"
+import Layout from "../../components/layout"
+import Head from "../../components/head"
+import HeadingOne from "../../components/headingOne"
+import Review from "../../components/review"
+import ReviewForm from "../../components/reviewForm"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar as fasStar } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
-
-export const propertyQuery = graphql`
-  query($slug: String!) {
-    property(listing_id: { eq: $slug }) {
-      description
-      displayable_address
-      short_description
-      image_url
-      image_caption
-      agent_logo
-      agent_name
-      listing_id
-    }
-  }
-`
 
 const Property = ({ props, location, data }) => {
   const [fetchedReviews, setFetchedReviews] = useState([])
@@ -30,6 +14,12 @@ const Property = ({ props, location, data }) => {
   const [notification, setNotification] = useState("")
   const [loading, setLoading] = useState("")
   const [error, setError] = useState("")
+
+  // Problem: Navigating direct to a property listing without clicking from results page returns 404.
+  // Potential Solution: On page load check if location.state.listingId is set. If not, perform fresh fetch from Zoopla using the location to extract the listing id.
+  // If not valid then 404 is correct.
+  // If valid then assign location.state.listingId and page should populate
+  // console.log(`This is the state log: ${location.state.listingId}`)
 
   useEffect(() => {
     // Function to call all review from Strapi API - Sets headers with JWT to authorise
@@ -55,7 +45,7 @@ const Property = ({ props, location, data }) => {
         })
         .then(json => {
           setFetchedReviews(
-            json.filter(review => review.listingId === data.property.listing_id)
+            json.filter(review => review.listingId === location.state.listingId)
           )
           setLoading(false)
         })
@@ -167,7 +157,7 @@ const Property = ({ props, location, data }) => {
       reviewForm.removeEventListener("submit", submitHandler)
       notification.removeEventListener("click", closeNotice)
     }
-  }, [formSubmit, data.property.listing_id])
+  }, [formSubmit, location.state.listingId])
 
   return (
     <Layout location={location}>
@@ -178,17 +168,17 @@ const Property = ({ props, location, data }) => {
           <div className="columns">
             <div className="column is-two-thirds">
               <figure>
-                <img src={data.property.image_url} alt="" />
-                <figcaption>{data.property.image_caption}</figcaption>
+                <img src={location.state.imageUrl} alt="" />
+                <figcaption>{location.state.imageCaption}</figcaption>
               </figure>
-              <p>{data.property.short_description}</p>
-              <p>{data.property.displayable_address}</p>
+              <p>{location.state.shortDescription}</p>
+              <p>{location.state.displayableAddress}</p>
             </div>
             {/* Sidebar */}
             <div className="columns is-one-third">
               <div>
-                <img src={data.property.agent_logo} alt="" />
-                <h6 className="title is-6">{data.property.agent_name}</h6>
+                <img src={location.state.agentLogo} alt="" />
+                <h6 className="title is-6">{location.state.agentName}</h6>
                 <span className="icon">
                   <FontAwesomeIcon icon={fasStar} />
                 </span>
@@ -225,7 +215,7 @@ const Property = ({ props, location, data }) => {
           <div className="columns is-centered">
             <div className="column is-two-thirds">
               <div className="review-wrap">
-                <ReviewForm listingId={data.property.listing_id} />
+                <ReviewForm listingId={location.state.listingId} />
                 <h2 className="title is-2 has-text-centered">
                   What the community says
                 </h2>

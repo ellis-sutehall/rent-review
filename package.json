@@ -21,6 +21,7 @@
     "axios": "^0.19.2",
     "bulma": "^0.8.0",
     "gatsby": "^2.19.7",
+    "gatsby-plugin-create-client-paths": "^2.3.4",
     "gatsby-plugin-react-helmet": "^3.1.22",
     "gatsby-plugin-sass": "^2.1.31",
     "gatsby-source-filesystem": "^2.2.2",

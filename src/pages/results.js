@@ -7,7 +7,7 @@ const Results = ({ location }) => {
   const [loading, setLoading] = useState("")
   const [error, setError] = useState("")
   const [fetchedData, setFetchedData] = useState("")
-
+  // const [fetchedId, setFetchedId] = useState("")
   // console.log(`Location: ${location.state.search}`)
 
   useEffect(() => {
@@ -48,7 +48,22 @@ const Results = ({ location }) => {
             fetchedData.map((listing, i) => {
               return (
                 <div>
-                  <Link to={`property/${listing.listing_id}`}>
+                  <Link
+                    state={{
+                      listingId: listing.listing_id,
+                      thumbnailUrl: listing.thumbnail_url,
+                      displayableAddress: listing.displayable_address,
+                      shortDescription: listing.short_description,
+                      listingStatus: listing.listing_status,
+                      postTown: listing.post_town,
+                      price: listing.price,
+                      imageUrl: listing.image_url,
+                      imageCaption: listing.image_caption,
+                      agentLogo: listing.agent_logo,
+                      agentName: listing.agent_name,
+                    }}
+                    to={`property/${listing.listing_id}`}
+                  >
                     <img src={listing.thumbnail_url} alt="" />
                     <p key={i}>{listing.displayable_address}</p>
                     <p key={i}>{listing.short_description}</p>
