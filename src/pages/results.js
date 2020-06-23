@@ -36,7 +36,7 @@ const Results = ({ location }) => {
   return (
     <Layout location={location}>
       <Head title="Results" />
-      <section>
+      <section className="section results">
         <div className="container">
           {loading && (
             <progress class="progress is-primary" value="15" max="100">
@@ -44,36 +44,50 @@ const Results = ({ location }) => {
             </progress>
           )}
           {error && <p>An error occurred, please try again later</p>}
-          {fetchedData &&
-            fetchedData.map((listing, i) => {
-              return (
-                <div>
+          <div className="grid-container">
+            {fetchedData &&
+              fetchedData.map((listing, index) => {
+                return (
                   <Link
+                    className="property-link"
+                    key={index}
                     state={{
                       listingId: listing.listing_id,
-                      thumbnailUrl: listing.thumbnail_url,
+                      propertyType: listing.property_type,
+                      numBedrooms: listing.num_bedrooms,
                       displayableAddress: listing.displayable_address,
                       shortDescription: listing.short_description,
                       listingStatus: listing.listing_status,
                       postTown: listing.post_town,
                       price: listing.price,
-                      imageUrl: listing.image_url,
+                      imageUrl: listing.image_645_430_url,
                       imageCaption: listing.image_caption,
                       agentLogo: listing.agent_logo,
                       agentName: listing.agent_name,
                     }}
                     to={`property/${listing.listing_id}`}
                   >
-                    <img src={listing.thumbnail_url} alt="" />
-                    <p key={i}>{listing.displayable_address}</p>
-                    <p key={i}>{listing.short_description}</p>
-                    <p key={i}>{listing.listing_status}</p>
-                    <p key={i}>{listing.post_town}</p>
-                    <p key={i}>{listing.price}</p>
+                    <div className="card">
+                      <div className="card-image">
+                        <figure className="image is-4by3">
+                          <img src={listing.image_645_430_url} alt="" />
+                        </figure>
+                      </div>
+                      <div className="card-content">
+                        <div className="content">
+                          <h2 className="title is-4">
+                            {listing.num_bedrooms} bedroom{" "}
+                            {listing.property_type}
+                          </h2>
+                          <p>{listing.displayable_address}</p>
+                          <p>£{listing.price}</p>
+                        </div>
+                      </div>
+                    </div>
                   </Link>
-                </div>
-              )
-            })}
+                )
+              })}
+          </div>
         </div>
       </section>
     </Layout>

@@ -210,17 +210,23 @@ const Property = ({ props, location, data }) => {
   let displayableAddress
   let agentLogo
   let agentName
+  let numBedrooms
+  let propertyType
   // Check and set vars based on user's journey either from /results or direct
   if (location.state !== null) {
     imageUrl = location.state.imageUrl
     imageCaption = location.state.imageCaption
+    numBedrooms = location.state.numBedrooms
+    propertyType = location.state.propertyType
     shortDescription = location.state.shortDescription
     displayableAddress = location.state.displayableAddress
     agentLogo = location.state.agentLogo
     agentName = location.state.agentName
   } else if (location.state === null && fetchedProperty) {
-    imageUrl = fetchedProperty[0].image_url
+    imageUrl = fetchedProperty[0].image_645_430_url
     imageCaption = fetchedProperty[0].image_caption
+    numBedrooms = fetchedProperty[0].num_bedrooms
+    propertyType = fetchedProperty[0].property_type
     shortDescription = fetchedProperty[0].short_description
     displayableAddress = fetchedProperty[0].displayable_address
     agentLogo = fetchedProperty[0].agent_logo
@@ -236,7 +242,7 @@ const Property = ({ props, location, data }) => {
         <div className="container">
           {error === true ? (
             <div>
-              <h1 className="title is-1">Property Not Found</h1>
+              <h1 className="title is-1">Property not found</h1>
               <p>
                 There was an error loading this property. Please check the
                 listing id carefully and try again
@@ -244,7 +250,9 @@ const Property = ({ props, location, data }) => {
             </div>
           ) : (
             <div>
-              <HeadingOne pageTitle="Property Title" />
+              <HeadingOne
+                pageTitle={`${numBedrooms} bedroom ${propertyType}`}
+              />
               <div className="columns">
                 <div className="column is-two-thirds">
                   <figure>
