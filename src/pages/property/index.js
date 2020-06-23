@@ -7,19 +7,57 @@ import ReviewForm from "../../components/reviewForm"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar as fasStar } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
+import { navigate } from "gatsby"
 
 const Property = ({ props, location, data }) => {
+  const [fetchedProperty, setFetchedProperty] = useState("")
   const [fetchedReviews, setFetchedReviews] = useState([])
   const [formSubmit, setFormSubmit] = useState("form-not-submitted")
   const [notification, setNotification] = useState("")
   const [loading, setLoading] = useState("")
   const [error, setError] = useState("")
 
-  // Problem: Navigating direct to a property listing without clicking from results page returns 404.
-  // Potential Solution: On page load check if location.state.listingId is set. If not, perform fresh fetch from Zoopla using the location to extract the listing id.
-  // If not valid then 404 is correct.
-  // If valid then assign location.state.listingId and page should populate
-  // console.log(`This is the state log: ${location.state.listingId}`)
+  let listingId
+  if (location.state !== null) {
+    listingId = location.state.listingId
+  } else {
+    listingId = location.pathname
+    listingId = listingId.split("/")
+    listingId = listingId[2]
+  }
+
+  // Get single property from url if page navigated to directly ie not from results page
+  const getSingleProperty = () => {
+    const propertyUrl = `http://api.zoopla.co.uk/api/v1/property_listings.json?listing_id=${listingId}&api_key=${process.env.ZOOPLA_API_KEY_ID}`
+    fetch(propertyUrl)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          return Promise.reject(response.status)
+        }
+      })
+      .then(json => {
+        setFetchedProperty(json.listing)
+        setLoading(false)
+        console.log(json.listing)
+      })
+      .catch(error => {
+        console.log(`Error from API: ${error}`)
+        setLoading(false)
+        setError(true)
+        setFetchedProperty(false)
+        // navigate("/404")
+        return false
+      })
+  }
+
+  useEffect(() => {
+    // If location state null then user has arrived on page directly, call function to get property
+    if (location.state === null) {
+      getSingleProperty()
+    }
+  }, [])
 
   useEffect(() => {
     // Function to call all review from Strapi API - Sets headers with JWT to authorise
@@ -45,7 +83,7 @@ const Property = ({ props, location, data }) => {
         })
         .then(json => {
           setFetchedReviews(
-            json.filter(review => review.listingId === location.state.listingId)
+            json.filter(review => review.listingId === listingId)
           )
           setLoading(false)
         })
@@ -70,7 +108,7 @@ const Property = ({ props, location, data }) => {
 
     // Hidden Inputs
     const date = document.getElementById("review-date")
-    const listingId = document.getElementById("listing-id")
+    const listingIdEl = document.getElementById("listing-id")
 
     // Notification
     const notification = document.querySelector(".notification")
@@ -93,7 +131,7 @@ const Property = ({ props, location, data }) => {
         name: name.value,
         email: email.value,
         date: date.value,
-        listingId: listingId.value,
+        listingId: listingIdEl.value,
         propertyRating: propertyRating.value,
         agentRating: agentRating.value,
         landlordRating: landlordRating.value,
@@ -129,7 +167,9 @@ const Property = ({ props, location, data }) => {
     }
 
     // Listen for form submit
-    reviewForm.addEventListener("submit", submitHandler)
+    if (reviewForm) {
+      reviewForm.addEventListener("submit", submitHandler)
+    }
 
     // Close notifiction
     const closeNotice = () => {
@@ -138,9 +178,11 @@ const Property = ({ props, location, data }) => {
     }
 
     // Listen for click on notification
-    notification.addEventListener("click", closeNotice)
-    // Close thank you notice on click
+    if (notification) {
+      notification.addEventListener("click", closeNotice)
+    }
 
+    // Close thank you notice after 5 seconds
     const closeTimeOut = () => {
       const notice = document.querySelector(".notification.notification-open")
       if (notice) {
@@ -154,87 +196,127 @@ const Property = ({ props, location, data }) => {
 
     // Clean up by removing eventlistener
     return () => {
-      reviewForm.removeEventListener("submit", submitHandler)
-      notification.removeEventListener("click", closeNotice)
+      if (reviewForm && notification) {
+        reviewForm.removeEventListener("submit", submitHandler)
+        notification.removeEventListener("click", closeNotice)
+      }
     }
-  }, [formSubmit, location.state.listingId])
+  }, [formSubmit, listingId, location.state])
+
+  // Declare vars
+  let imageUrl
+  let imageCaption
+  let shortDescription
+  let displayableAddress
+  let agentLogo
+  let agentName
+  // Check and set vars based on user's journey either from /results or direct
+  if (location.state !== null) {
+    imageUrl = location.state.imageUrl
+    imageCaption = location.state.imageCaption
+    shortDescription = location.state.shortDescription
+    displayableAddress = location.state.displayableAddress
+    agentLogo = location.state.agentLogo
+    agentName = location.state.agentName
+  } else if (location.state === null && fetchedProperty) {
+    imageUrl = fetchedProperty[0].image_url
+    imageCaption = fetchedProperty[0].image_caption
+    shortDescription = fetchedProperty[0].short_description
+    displayableAddress = fetchedProperty[0].displayable_address
+    agentLogo = fetchedProperty[0].agent_logo
+    agentName = fetchedProperty[0].agent_name
+  }
+
+  // console.log(fetchedProperty && fetchedProperty[0].image_url)
 
   return (
     <Layout location={location}>
       <Head title="Property" />
       <section>
         <div className="container">
-          <HeadingOne pageTitle="Property H1 Title Thingy" />
-          <div className="columns">
-            <div className="column is-two-thirds">
-              <figure>
-                <img src={location.state.imageUrl} alt="" />
-                <figcaption>{location.state.imageCaption}</figcaption>
-              </figure>
-              <p>{location.state.shortDescription}</p>
-              <p>{location.state.displayableAddress}</p>
+          {error === true ? (
+            <div>
+              <h1 className="title is-1">Property Not Found</h1>
+              <p>
+                There was an error loading this property. Please check the
+                listing id carefully and try again
+              </p>
             </div>
-            {/* Sidebar */}
-            <div className="columns is-one-third">
-              <div>
-                <img src={location.state.agentLogo} alt="" />
-                <h6 className="title is-6">{location.state.agentName}</h6>
-                <span className="icon">
-                  <FontAwesomeIcon icon={fasStar} />
-                </span>
-                <span className="icon">
-                  <FontAwesomeIcon icon={fasStar} />
-                </span>
-                <span className="icon">
-                  <FontAwesomeIcon icon={fasStar} />
-                </span>
-                <span className="icon">
-                  <FontAwesomeIcon icon={fasStar} />
-                </span>
-                <span className="icon">
-                  <FontAwesomeIcon icon={farStar} />
-                </span>
+          ) : (
+            <div>
+              <HeadingOne pageTitle="Property Title" />
+              <div className="columns">
+                <div className="column is-two-thirds">
+                  <figure>
+                    <img src={imageUrl} alt="" />
+                    <figcaption>{imageCaption}</figcaption>
+                  </figure>
+                  <p>{shortDescription}</p>
+                  <p>{displayableAddress}</p>
+                </div>
+                <div className="columns is-one-third">
+                  <div>
+                    <img src={agentLogo} alt="" />
+                    <h6 className="title is-6">{agentName}</h6>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={fasStar} />
+                    </span>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={fasStar} />
+                    </span>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={fasStar} />
+                    </span>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={fasStar} />
+                    </span>
+                    <span className="icon">
+                      <FontAwesomeIcon icon={farStar} />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+      {!error && (
+        <section className="reviews">
+          <div className="container">
+            <div className={`notification is-success ${notification}`}>
+              <button className="delete"></button>
+              <h4 className="title is-4">Your review has been submitted</h4>
+              <p>Thank you for submitting a review for this property.</p>
+              <p>Your review will appear soon.</p>
+            </div>
+            <h2 className="title is-2 has-text-centered">Lived here?</h2>
+            <h3 className="title -is-3 has-text-centered">
+              Help others by leaving a review
+            </h3>
+            <div className="columns is-centered">
+              <div className="column is-two-thirds">
+                <div className="review-wrap">
+                  <ReviewForm listingId={listingId} />
+                  <h2 className="title is-2 has-text-centered">
+                    What the community says
+                  </h2>
+                  {loading && <p>Loading reviews...</p>}
+                  {error && (
+                    <p>
+                      There was an error fetching the reviews, please try again
+                      later
+                    </p>
+                  )}
+                  {fetchedReviews &&
+                    Object.keys(fetchedReviews).map((index, key) => (
+                      <Review key={index} review={fetchedReviews[key]} />
+                    ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="reviews">
-        <div className="container">
-          <div className={`notification is-success ${notification}`}>
-            <button className="delete"></button>
-            <h4 className="title is-4">Your review has been submitted</h4>
-            <p>Thank you for submitting a review for this property.</p>
-            <p>Your review will appear soon.</p>
-          </div>
-          <h2 className="title is-2 has-text-centered">Lived here?</h2>
-          <h3 className="title -is-3 has-text-centered">
-            Help others by leaving a review
-          </h3>
-          <div className="columns is-centered">
-            <div className="column is-two-thirds">
-              <div className="review-wrap">
-                <ReviewForm listingId={location.state.listingId} />
-                <h2 className="title is-2 has-text-centered">
-                  What the community says
-                </h2>
-                {loading && <p>Loading reviews...</p>}
-                {error && (
-                  <p>
-                    There was an error fetching the reviews, please try again
-                    later
-                  </p>
-                )}
-                {fetchedReviews &&
-                  Object.keys(fetchedReviews).map((index, key) => (
-                    <Review key={index} review={fetchedReviews[key]} />
-                  ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </Layout>
   )
 }
