@@ -1,20 +1,34 @@
 import React from "react"
+import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import Head from "../components/head"
 import PageHero from "../components/pageHero"
+import ReactMarkdown from "react-markdown"
 
-const aboutPage = ({ location }) => (
-  <Layout location={location}>
-    <Head title="About" />
-    <PageHero />
-    <section>
-      <div className="container">
-        <h2 className="title is-2">Second Section</h2>
-        <p>More detail about site here</p>
-        <p>Maybe some images or icons would be nice?</p>
-      </div>
-    </section>
-  </Layout>
-)
+export const data = graphql`
+  query {
+    strapiAbout {
+      title
+      body
+    }
+  }
+`
+
+const aboutPage = ({ location, data }) => {
+  const about = data.strapiAbout
+  return (
+    <Layout location={location}>
+      <Head title={about.title} />
+      <PageHero />
+      <section>
+        <div className="container">
+          <div className="content">
+            <ReactMarkdown source={about.body} />
+          </div>
+        </div>
+      </section>
+    </Layout>
+  )
+}
 
 export default aboutPage

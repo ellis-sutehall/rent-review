@@ -7,8 +7,6 @@ import HomeHeroFooter from "../components/homeHeroFooter"
 import HomeSecondary from "../components/homeSecondary"
 
 const IndexPage = ({ location }) => {
-  // console.log(location.pathname)
-
   return (
     <Layout location={location}>
       <Head title="Home" />

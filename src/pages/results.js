@@ -7,31 +7,86 @@ const Results = ({ location }) => {
   const [loading, setLoading] = useState("")
   const [error, setError] = useState("")
   const [fetchedData, setFetchedData] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
   // const [fetchedId, setFetchedId] = useState("")
   // console.log(`Location: ${location.state.search}`)
 
   useEffect(() => {
     const postcode = location.state.search
+    const getAllResults = () => {
+      fetch(
+        `http://api.zoopla.co.uk/api/v1/property_listings.json?postcode=${postcode}&page_number=${currentPage}&listing_status=rent&api_key=${process.env.ZOOPLA_API_KEY_ID}`
+      )
+        .then(response => {
+          return response.json()
+        })
+        .then(json => {
+          setFetchedData(json)
+          setLoading(false)
+          console.log(json)
+        })
+        .catch(error => {
+          console.log(error)
+          setLoading(false)
+          setError(true)
+          setFetchedData(false)
+          return false
+        })
+    }
+    getAllResults()
+  }, [location.state.search, currentPage])
 
-    fetch(
-      `http://api.zoopla.co.uk/api/v1/property_listings.json?postcode=${postcode}&listing_status=rent&api_key=${process.env.ZOOPLA_API_KEY_ID}`
-    )
-      .then(response => {
-        return response.json()
+  // Conditionally load next button if fetchedData valid
+  const nextPageButton = () => {
+    if (fetchedData && fetchedData.result_count > 10) {
+      return (
+        <button className="button" id="next" onClick={nextPage}>
+          Next
+        </button>
+      )
+    }
+  }
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1)
+  }
+  // Display previous button if not on page 1
+  const prevPageButton = () => {
+    if (currentPage > 1) {
+      return (
+        <button className="button" id="next" onClick={prevPage}>
+          Previous
+        </button>
+      )
+    }
+  }
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1)
+  }
+
+  const pageButtons = () => {
+    // Result count divided by page_size, this might change
+    let numberOfPages = fetchedData && fetchedData.result_count / 10
+    numberOfPages = Math.ceil(numberOfPages)
+    let buttonsArr = []
+    for (let index = 1; index < numberOfPages; index++) {
+      buttonsArr.push(index)
+    }
+    return buttonsArr
+  }
+  pageButtons()
+  console.log(pageButtons())
+
+  useEffect(() => {
+    const handlePageButtons = () => {
+      const buttons = document.querySelectorAll(".page-buttons")
+      buttons.forEach(button => {
+        button.addEventListener("click", function(e) {
+          setCurrentPage(e.target.getAttribute("data-page-number"))
+        })
       })
-      .then(json => {
-        setFetchedData(json.listing)
-        setLoading(false)
-        console.log(json)
-      })
-      .catch(error => {
-        console.log(error)
-        setLoading(false)
-        setError(true)
-        setFetchedData(false)
-        return false
-      })
-  }, [location.state.search])
+    }
+    handlePageButtons()
+  })
 
   return (
     <Layout location={location}>
@@ -46,7 +101,7 @@ const Results = ({ location }) => {
           {error && <p>An error occurred, please try again later</p>}
           <div className="grid-container">
             {fetchedData &&
-              fetchedData.map((listing, index) => {
+              fetchedData.listing.map((listing, index) => {
                 return (
                   <Link
                     className="property-link"
@@ -88,6 +143,15 @@ const Results = ({ location }) => {
                 )
               })}
           </div>
+          {fetchedData && prevPageButton()}
+          {pageButtons().map(index => {
+            return (
+              <button className="button page-buttons" data-page-number={index}>
+                {index}
+              </button>
+            )
+          })}
+          {nextPageButton()}
         </div>
       </section>
     </Layout>

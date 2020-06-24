@@ -7,7 +7,6 @@ import ReviewForm from "../../components/reviewForm"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar as fasStar } from "@fortawesome/free-solid-svg-icons"
 import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
-import { navigate } from "gatsby"
 
 const Property = ({ props, location, data }) => {
   const [fetchedProperty, setFetchedProperty] = useState("")
@@ -57,7 +56,7 @@ const Property = ({ props, location, data }) => {
     if (location.state === null) {
       getSingleProperty()
     }
-  }, [])
+  }, [location.state])
 
   useEffect(() => {
     // Function to call all review from Strapi API - Sets headers with JWT to authorise

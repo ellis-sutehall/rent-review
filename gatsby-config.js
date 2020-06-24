@@ -17,6 +17,22 @@ module.exports = {
       resolve: `gatsby-plugin-create-client-paths`,
       options: { prefixes: [`/property/*`] },
     },
+    {
+      resolve: "gatsby-source-strapi",
+      options: {
+        apiURL: process.env.GATSBY_API_URL || "http://localhost:1337",
+        contentTypes: [
+          // List of the Content Types you want to be able to request from Gatsby.
+          // "article",
+        ],
+        singleTypes: ["homepage", "about"],
+        loginData: {
+          identifier: process.env.API_IDENTIFIER,
+          password: process.env.API_PASSWORD,
+        },
+        queryLimit: 1000,
+      },
+    },
     // {
     //   resolve: "gatsby-source-zoopla",
     //   options: {

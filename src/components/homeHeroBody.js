@@ -1,9 +1,18 @@
 import React, { useState } from "react"
-import { navigate } from "gatsby"
+import { navigate, useStaticQuery, graphql } from "gatsby"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons"
 
 const HomeHeroBody = () => {
+  const data = useStaticQuery(graphql`
+    query {
+      strapiHomepage {
+        title
+        tagline
+      }
+    }
+  `)
+
   const [search, setSearch] = useState("")
   const [focus, setFocus] = useState("")
 
@@ -22,13 +31,15 @@ const HomeHeroBody = () => {
     console.log(search)
     navigate("/results", { state: { search } })
   }
+  const home = data.strapiHomepage
+  console.log(data)
   return (
     <div className="hero-body">
       <div className="hero-search">
         <div className="columns is-centered">
           <div className="column is-two-thirds has-text-centered">
-            <h2 className="title is-2">Find your ideal property</h2>
-            <h3 className="title is-3">With help from the renting community</h3>
+            <h2 className="title is-2">{home.title}</h2>
+            <h3 className="title is-3">{home.tagline}</h3>
           </div>
         </div>
         <div className="columns is-centered">
