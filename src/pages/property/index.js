@@ -4,9 +4,7 @@ import Head from "../../components/head"
 import HeadingOne from "../../components/headingOne"
 import Review from "../../components/review"
 import ReviewForm from "../../components/reviewForm"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStar as fasStar } from "@fortawesome/free-solid-svg-icons"
-import { faStar as farStar } from "@fortawesome/free-regular-svg-icons"
+import StarRating from "../../components/starRating"
 
 const Property = ({ props, location, data }) => {
   const [fetchedProperty, setFetchedProperty] = useState("")
@@ -232,7 +230,28 @@ const Property = ({ props, location, data }) => {
     agentName = fetchedProperty[0].agent_name
   }
 
-  // console.log(fetchedProperty && fetchedProperty[0].image_url)
+  // Get average rating from all reviews
+  const reviewAverageTotal = () => {
+    if (fetchedReviews) {
+      let reviewAverage = 0
+      let averageTotal = 0
+      let index = 0
+      for (const key in fetchedReviews) {
+        if (fetchedReviews.hasOwnProperty(key)) {
+          index++
+          const review = fetchedReviews[key]
+          reviewAverage +=
+            (review.agentRating +
+              review.landlordRating +
+              review.propertyRating) /
+            3
+        }
+        averageTotal = reviewAverage / index
+      }
+      averageTotal = Math.round(averageTotal)
+      return averageTotal
+    }
+  }
 
   return (
     <Layout location={location}>
@@ -265,21 +284,8 @@ const Property = ({ props, location, data }) => {
                   <div>
                     <img src={agentLogo} alt="" />
                     <h6 className="title is-6">{agentName}</h6>
-                    <span className="icon">
-                      <FontAwesomeIcon icon={fasStar} />
-                    </span>
-                    <span className="icon">
-                      <FontAwesomeIcon icon={fasStar} />
-                    </span>
-                    <span className="icon">
-                      <FontAwesomeIcon icon={fasStar} />
-                    </span>
-                    <span className="icon">
-                      <FontAwesomeIcon icon={fasStar} />
-                    </span>
-                    <span className="icon">
-                      <FontAwesomeIcon icon={farStar} />
-                    </span>
+                    <h6 className="title is-6">Property average rating</h6>
+                    <StarRating count={reviewAverageTotal()} />
                   </div>
                 </div>
               </div>

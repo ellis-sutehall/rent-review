@@ -42,7 +42,6 @@ const Review = props => {
       <p>{props.review.reviewBody}</p>
       <p className="reviewer">
         <strong>- {props.review.name}</strong>
-        <strong>- {props.review.listingId}</strong>
       </p>
     </div>
   )
